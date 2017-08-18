@@ -26,5 +26,6 @@
 	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/lib/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/lib/junit-4.12.jar"/>
 	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/apache-tomcat-7.0.79/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
