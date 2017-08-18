@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_60]">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/poi-3.16.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/poi-examples-3.16.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/poi-excelant-3.16.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/poi-ooxml-3.16.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/poi-ooxml-schemas-3.16.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/poi-scratchpad-3.16.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/ooxml-lib/curvesapi-1.04.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/ooxml-lib/xmlbeans-2.6.0.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/lib/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/lib/commons-collections4-4.1.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/lib/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="/Users/shawn-xu/eclipse-workspace/poi-3.16/lib/log4j-1.2.17.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
