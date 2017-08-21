@@ -28,18 +28,17 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 	 * @param filePath	要读取的excel的文件路径
 	 * @param dataSource	建立sql连接所需资源实例
 	 */
-	/*
-	public AttendanceDAOImplement(String filePath, DataSource dataSource, 
+	public AttendanceDAOImplement(String defaultFolderPath, DataSource dataSource, 
 			String normalTableName, String abnormalTableName) {
 		this.normalTableName = normalTableName;
 		this.abnormalTableName = abnormalTableName;
 		this.defaultFolderPath = defaultFolderPath;
-		attendance = buildAttendance(filePath);
 		this.dataSource = dataSource;
-		
+		attendance = buildAttendance(defaultFolderPath);
+		writeDataBase();
 	}
-	*/
 	
+	/*
 	// Test constructor 
 	public AttendanceDAOImplement(String defaultFolderPath, String normalTableName, 
 			String abnormalTableName) {
@@ -49,6 +48,7 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 		attendance = buildAttendance(defaultFolderPath);
 		writeDataBase();
 	}
+	*/
 		
 	/**	从数据库中取出某员工的正常出勤记录
 	 * 
@@ -62,11 +62,13 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 		SQLException ex = null;
 		TreeSet<Record> records = new TreeSet<Record>();
 		try {
-			//conn = dataSource.getConnection();
+			conn = dataSource.getConnection();
+			/*
 			String jdbcUrl = "jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false&characterEncoding=utf-8";
 			String username = "root";
 			String password = "123456";
 			conn = DriverManager.getConnection(jdbcUrl, username, password);
+			*/
 			
 			stmt = conn.prepareStatement("SELECT date, name, arrive, depart FROM "
 					+ normalTableName + " WHERE name = ?");
@@ -113,11 +115,13 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 		SQLException ex = null;
 		TreeSet<Record> records = new TreeSet<Record>();
 		try {
-			//conn = dataSource.getConnection();
+			conn = dataSource.getConnection();
+			/*
 			String jdbcUrl = "jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false&characterEncoding=utf-8";
 			String username = "root";
 			String password = "123456";
 			conn = DriverManager.getConnection(jdbcUrl, username, password);
+			*/
 			
 			stmt = conn.prepareStatement("SELECT date, name, time FROM " + 
 					abnormalTableName + " WHERE name = ?");
@@ -170,11 +174,13 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 		PreparedStatement abnormal = null;
 		SQLException ex = null;
 		try {
-			//conn = dataSource.getConnection();
+			conn = dataSource.getConnection();
+			/*
 			String jdbcUrl = "jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false&characterEncoding=utf-8";
 			String username = "root";
 			String password = "123456";
 			conn = DriverManager.getConnection(jdbcUrl, username, password);
+			*/
 			stmt = conn.prepareStatement("INSERT IGNORE INTO " + normalTableName + "(date, name, arrive, depart) VALUES(?,?,?,?)");	//
 			abnormal = conn.prepareStatement("INSERT IGNORE INTO " + abnormalTableName + "(date, name, time) VALUES(?,?,?)");	// 
 			for (String name : attendance.getAllNames()) {
@@ -253,7 +259,6 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 			// for each name in the path array
 			for (String path : paths) {
 				if (path.endsWith(".xlsx")) {
-					System.out.println(defaultFolderPath + "/" + path);
 					FileInputStream file = new FileInputStream(new File(defaultFolderPath + "/" + path));
 					XSSFWorkbook workbook = new XSSFWorkbook(file);
 					XSSFSheet sheet = workbook.getSheetAt(0);

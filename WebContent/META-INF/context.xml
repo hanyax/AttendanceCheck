@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/Attendance">
+    <Resource name="jdbc/attendance"
+      auth="Container" type="javax.sql.DataSource"
+      maxActive="100" maxIdle="30" maxWait="10000" username="root"
+      password="123456" driverClassName="com.mysql.jdbc.Driver"
+      url="jdbc:mysql://localhost:3306/test?autoReconnect=true&amp;useSSL=false&amp;characterEncoding=utf-8"/>
+</Context>
