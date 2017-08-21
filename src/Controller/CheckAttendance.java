@@ -20,8 +20,8 @@ import Model.Record;
 @WebServlet(
 	urlPatterns={"/checkAttendance.do"},
     initParams={
-		@WebInitParam(name = "SUCCESS_VIEW", value = "Success.jsp"),
-		@WebInitParam(name = "ERROR_VIEW", value = "Index.jsp")
+		@WebInitParam(name = "SUCCESS_VIEW", value = "/View/success.jsp"),
+		@WebInitParam(name = "ERROR_VIEW", value = "/View/index.jsp")
     }
 )
 
@@ -29,7 +29,7 @@ public class CheckAttendance extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String SUCCESS_VIEW;
     private String ERROR_VIEW;
-       
+    
     @Override
     public void init() throws ServletException {
         SUCCESS_VIEW = getServletConfig().getInitParameter("SUCCESS_VIEW");
@@ -45,12 +45,13 @@ public class CheckAttendance extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) 
     		throws ServletException, IOException {
+    		request.setCharacterEncoding("UTF-8");
 	    String name = request.getParameter("name");
 	    String page;
 	    AttendanceDAO attendance = (AttendanceDAO) getServletContext().getAttribute("attendanceService");
 	    TreeSet<Record> records = attendance.getAttendance(name);
 	    TreeSet<Record> abnormal_records = attendance.getAbnormalAttendance(name);
-	    if (records.isEmpty()) {
+	    if (records.isEmpty() && abnormal_records.isEmpty()) {
 	    		request.setAttribute("error", "该姓名无考勤记录");
 	    		page = ERROR_VIEW;
 	    } else {

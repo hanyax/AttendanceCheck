@@ -16,7 +16,7 @@ public class AttendanceCheckListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent arg)  { 
          ServletContext context = arg.getServletContext();
          //Use XML configuration later later 
-         AttendanceDAOImplement attendance = new AttendanceDAOImplement("/Users/shawn-xu/Desktop/5.26-6.25.xlsx");
+         AttendanceDAOImplement attendance = new AttendanceDAOImplement("/Users/shawn-xu/Desktop","test", "abnormal");
          context.setAttribute("attendanceService", attendance);
     }
     

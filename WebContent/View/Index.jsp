@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -16,9 +16,10 @@
     }
 %>
         <h1>考勤查询</h1>
-        <form method='post' action='checkAttendance.do'>
+        <form method='post' action='${pageContext.request.contextPath}/checkAttendance.do'>
         		姓名:<br>
-  			<input type="text" name="name" value='${param.name}'><br><br>
+  			<input type="text" name="name">
+  			<br><br>
   			<input type="submit" value="查询">
          </form>
 	</body>

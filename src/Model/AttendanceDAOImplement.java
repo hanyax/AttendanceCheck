@@ -10,8 +10,7 @@ import javax.sql.DataSource;
 import java.text.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
  
 /**
  * 读取考勤Excel表格 提供MySQL数据库读写的实现
@@ -19,6 +18,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class AttendanceDAOImplement implements AttendanceDAO {
 	private Attendance attendance;
 	private DataSource dataSource;
+	private String normalTableName;
+	private String abnormalTableName;
+	private String defaultFolderPath;
 	
 	/** 读取filePath的excel表格 将数据储存在attendance实例中并
 	 * 	初始化 AttendanceDAOImplement 实例
@@ -27,15 +29,24 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 	 * @param dataSource	建立sql连接所需资源实例
 	 */
 	/*
-	public AttendanceDAOImplement(String filePath, DataSource dataSource) {
+	public AttendanceDAOImplement(String filePath, DataSource dataSource, 
+			String normalTableName, String abnormalTableName) {
+		this.normalTableName = normalTableName;
+		this.abnormalTableName = abnormalTableName;
+		this.defaultFolderPath = defaultFolderPath;
 		attendance = buildAttendance(filePath);
 		this.dataSource = dataSource;
+		
 	}
 	*/
 	
 	// Test constructor 
-	public AttendanceDAOImplement(String filePath) {
-		attendance = buildAttendance(filePath);
+	public AttendanceDAOImplement(String defaultFolderPath, String normalTableName, 
+			String abnormalTableName) {
+		this.normalTableName = normalTableName;
+		this.abnormalTableName = abnormalTableName;
+		this.defaultFolderPath = defaultFolderPath;
+		attendance = buildAttendance(defaultFolderPath);
 		writeDataBase();
 	}
 		
@@ -57,7 +68,8 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 			String password = "123456";
 			conn = DriverManager.getConnection(jdbcUrl, username, password);
 			
-			stmt = conn.prepareStatement("SELECT date, name, arrive, depart FROM test WHERE name = ?");
+			stmt = conn.prepareStatement("SELECT date, name, arrive, depart FROM "
+					+ normalTableName + " WHERE name = ?");
 			stmt.setString(1, name);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -101,8 +113,14 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 		SQLException ex = null;
 		TreeSet<Record> records = new TreeSet<Record>();
 		try {
-			conn = dataSource.getConnection();
-			stmt = conn.prepareStatement("SELECT date, name, time FROM abnormal WHERE name = ?");
+			//conn = dataSource.getConnection();
+			String jdbcUrl = "jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false&characterEncoding=utf-8";
+			String username = "root";
+			String password = "123456";
+			conn = DriverManager.getConnection(jdbcUrl, username, password);
+			
+			stmt = conn.prepareStatement("SELECT date, name, time FROM " + 
+					abnormalTableName + " WHERE name = ?");
 			stmt.setString(1, name);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -157,8 +175,8 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 			String username = "root";
 			String password = "123456";
 			conn = DriverManager.getConnection(jdbcUrl, username, password);
-			stmt = conn.prepareStatement("INSERT IGNORE INTO test(date, name, arrive, depart) VALUES(?,?,?,?)");	//
-			abnormal = conn.prepareStatement("INSERT IGNORE INTO abnormal(date, name, time) VALUES(?,?,?)");	// 
+			stmt = conn.prepareStatement("INSERT IGNORE INTO " + normalTableName + "(date, name, arrive, depart) VALUES(?,?,?,?)");	//
+			abnormal = conn.prepareStatement("INSERT IGNORE INTO " + abnormalTableName + "(date, name, time) VALUES(?,?,?)");	// 
 			for (String name : attendance.getAllNames()) {
 				TreeMap<Date, SortedSet<Date>> records = attendance.getAttendance(name);
 				for (Date date : records.keySet()) {
@@ -224,32 +242,43 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 	 * @throws 	IOException 
 	 * @throws 	FileNotFoundException 
 	 */
-	private Attendance buildAttendance(String filePath) {
+	private Attendance buildAttendance(String folderPath) {
 		Attendance attendance = new Attendance();
+		File files = null;
+		String[] paths;
 		try {
-			FileInputStream file = new FileInputStream(new File(filePath));
-			XSSFWorkbook workbook = new XSSFWorkbook(file);
-			XSSFSheet sheet = workbook.getSheetAt(0);
-			Iterator<Row> rowIterator = sheet.iterator();
-			
-			while (rowIterator.hasNext()) {
-				Row row = rowIterator.next();
-				Iterator<Cell> cellIterator = row.cellIterator();
-				while (cellIterator.hasNext()) {
-					String name = cellIterator.next().getStringCellValue() ;
-                		String dateAndTime = cellIterator.next().getStringCellValue();
-                		if (!name.isEmpty() && !dateAndTime.isEmpty()) {            		
-    	                		Date[] dateArray = getDateAndTime(dateAndTime);
-	                		if (dateArray != null) {
-		                		Date date = dateArray[0];
-		                		Date time = dateArray[1];
-		                		attendance.add(name, date, time);
-	                		}
-                		}
+			files = new File(defaultFolderPath);
+			// list of files and directories
+			paths = files.list();
+			// for each name in the path array
+			for (String path : paths) {
+				if (path.endsWith(".xlsx")) {
+					System.out.println(defaultFolderPath + "/" + path);
+					FileInputStream file = new FileInputStream(new File(defaultFolderPath + "/" + path));
+					XSSFWorkbook workbook = new XSSFWorkbook(file);
+					XSSFSheet sheet = workbook.getSheetAt(0);
+					Iterator<Row> rowIterator = sheet.iterator();
+					
+					while (rowIterator.hasNext()) {
+						Row row = rowIterator.next();
+						Iterator<Cell> cellIterator = row.cellIterator();
+						while (cellIterator.hasNext()) {
+							String name = cellIterator.next().getStringCellValue() ;
+		                		String dateAndTime = cellIterator.next().getStringCellValue();
+		                		if (!name.isEmpty() && !dateAndTime.isEmpty()) {            		
+		    	                		Date[] dateArray = getDateAndTime(dateAndTime);
+			                		if (dateArray != null) {
+				                		Date date = dateArray[0];
+				                		Date time = dateArray[1];
+				                		attendance.add(name, date, time);
+			                		}
+		                		}
+						}
+					}
+					workbook.close();
+					file.close();
 				}
 			}
-			workbook.close();
-			file.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
