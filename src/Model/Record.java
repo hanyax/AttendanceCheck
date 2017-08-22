@@ -8,12 +8,14 @@ public class Record implements Comparable<Object> {
 	private Date date;
 	private Date arriveTime;
 	private Date departTime;
+	private long totalTime;
 	private boolean isEightHour;
 	
 	public Record(String name, Date date, Date arriveTime, Date departTime) {
 		this(name, date, arriveTime);
 		this.departTime = departTime;
-		this.isEightHour = (getDateDiff(arriveTime, departTime,TimeUnit.MINUTES) > (8 * 60));
+		this.totalTime = getDateDiff(arriveTime, departTime,TimeUnit.MINUTES);
+		this.isEightHour = (totalTime > (8 * 60));
 	}
 	
 	public Record(String name, Date date, Date arriveTime) {
@@ -21,6 +23,7 @@ public class Record implements Comparable<Object> {
 		this.date = date;
 		this.arriveTime = arriveTime;
 		this.departTime = null;
+		this.totalTime = 0;
 		this.isEightHour = false;
 	}
 	
@@ -44,8 +47,12 @@ public class Record implements Comparable<Object> {
 		return this.isEightHour;
 	}
 	
+	public long getTotalTime() {
+		return this.totalTime;
+	}
+	
 	/**
-	 * Get a diff between two dates
+	 * Get time difference between two dates in minutes
 	 * @param date1 the oldest date
 	 * @param date2 the newest date
 	 * @param timeUnit the unit in which you want the diff

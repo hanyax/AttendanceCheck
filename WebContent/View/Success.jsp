@@ -9,38 +9,44 @@
 	</head>
 	<body>
 		<h1><%= request.getParameter("name") %>的考勤记录:</h1><br>
-		<table>
+		<table style="width: 100%">
 			  <tr>
 			    <th>日期</th>
+			    <th>上班时长（分钟）</th>
 			    <th>到达时间</th>
 			    <th>离开时间</th>
+			    <th>是否满足8小时</th>
 			  </tr>
-<%
+<%	
+	@SuppressWarnings("unchecked")
 	TreeSet<Record> records = (TreeSet<Record>) request.getAttribute("record");
 	for (Record record :records) {
 %>	
 		<tr>
-			<td><%=record.getDate() %></td>
-			<td><%=record.getArriveTime() %></td>
-			<td><%=record.getDepartTime() %>></td>
+			<td align="center"><%=record.getDate() %></td>
+			<td align="center"><%=record.getTotalTime() %></td>
+			<td align="center"><%=record.getArriveTime() %></td>
+			<td align="center"><%=record.getDepartTime() %>></td>
+			<td align="center"><%=record.isEightHour() %></td>
 		</tr>
 <%
 	}
 %>
 		</table>
 		<h1><%= request.getParameter("name") %>的不完整考勤记录:</h1><br>
-		<table>
+		<table style="width: 100%">
 			  <tr>
 			    <th>日期</th>
 			    <th>打卡时间</th>
 			  </tr>
 <%
+	@SuppressWarnings("unchecked")
 	TreeSet<Record> abnornal_records = (TreeSet<Record>) request.getAttribute("abnormal_record");
 	for (Record abnormal_record : abnornal_records) {
 %>	
 		<tr>
-			<td><%=abnormal_record.getDate() %></td>
-			<td><%=abnormal_record.getArriveTime() %></td>
+			<td align="center"><%=abnormal_record.getDate() %></td>
+			<td align="center"><%=abnormal_record.getArriveTime() %></td>
 		</tr>
 <%
 	}

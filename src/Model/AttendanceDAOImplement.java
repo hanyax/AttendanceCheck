@@ -22,11 +22,15 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 	private String abnormalTableName;
 	private String defaultFolderPath;
 	
-	/** 读取filePath的excel表格 将数据储存在attendance实例中并
+	/**
+	 * 	/** 读取filePath的excel表格 将数据储存在attendance实例中并
 	 * 	初始化 AttendanceDAOImplement 实例
-	 * 
-	 * @param filePath	要读取的excel的文件路径
-	 * @param dataSource	建立sql连接所需资源实例
+	 *
+	 * @param dataSource	
+	 * @param defaultFolderPath 	要读取的excel的文件路径
+	 * @param dataSource			建立sql连接所需资源实例
+	 * @param normalTableName	正常考勤记录数据库表名
+	 * @param abnormalTableName	非正常考勤记录数据库表名
 	 */
 	public AttendanceDAOImplement(String defaultFolderPath, DataSource dataSource, 
 			String normalTableName, String abnormalTableName) {
@@ -38,18 +42,7 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 		writeDataBase();
 	}
 	
-	/*
-	// Test constructor 
-	public AttendanceDAOImplement(String defaultFolderPath, String normalTableName, 
-			String abnormalTableName) {
-		this.normalTableName = normalTableName;
-		this.abnormalTableName = abnormalTableName;
-		this.defaultFolderPath = defaultFolderPath;
-		attendance = buildAttendance(defaultFolderPath);
-		writeDataBase();
-	}
-	*/
-		
+	
 	/**	从数据库中取出某员工的正常出勤记录
 	 * 
 	 * @param 	员工姓名
@@ -63,13 +56,6 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 		TreeSet<Record> records = new TreeSet<Record>();
 		try {
 			conn = dataSource.getConnection();
-			/*
-			String jdbcUrl = "jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false&characterEncoding=utf-8";
-			String username = "root";
-			String password = "123456";
-			conn = DriverManager.getConnection(jdbcUrl, username, password);
-			*/
-			
 			stmt = conn.prepareStatement("SELECT date, name, arrive, depart FROM "
 					+ normalTableName + " WHERE name = ?");
 			stmt.setString(1, name);
@@ -104,7 +90,7 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 		return records;
 	}
 	
-	/**	从数据库中取出某员工的异常(一天一次)出勤记录
+	/**	从数据库中取出某员工的异常(一天打卡一次)出勤记录
 	 * 
 	 * @param name
 	 * @return
@@ -116,13 +102,6 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 		TreeSet<Record> records = new TreeSet<Record>();
 		try {
 			conn = dataSource.getConnection();
-			/*
-			String jdbcUrl = "jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false&characterEncoding=utf-8";
-			String username = "root";
-			String password = "123456";
-			conn = DriverManager.getConnection(jdbcUrl, username, password);
-			*/
-			
 			stmt = conn.prepareStatement("SELECT date, name, time FROM " + 
 					abnormalTableName + " WHERE name = ?");
 			stmt.setString(1, name);
@@ -175,12 +154,6 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 		SQLException ex = null;
 		try {
 			conn = dataSource.getConnection();
-			/*
-			String jdbcUrl = "jdbc:mysql://localhost:3306/test?autoReconnect=true&useSSL=false&characterEncoding=utf-8";
-			String username = "root";
-			String password = "123456";
-			conn = DriverManager.getConnection(jdbcUrl, username, password);
-			*/
 			stmt = conn.prepareStatement("INSERT IGNORE INTO " + normalTableName + "(date, name, arrive, depart) VALUES(?,?,?,?)");	//
 			abnormal = conn.prepareStatement("INSERT IGNORE INTO " + abnormalTableName + "(date, name, time) VALUES(?,?,?)");	// 
 			for (String name : attendance.getAllNames()) {
@@ -242,7 +215,7 @@ public class AttendanceDAOImplement implements AttendanceDAO {
 	
 	/**	读取考勤Excel表格 将数据储存在attendance对象中
 	 * 
-	 * @param 	fileName 记录打卡的excel文档记录
+	 * @param 	folderName 	记录打卡的excel文档文件夹名
 	 * @param 	attendance	组织数据的数据结构
 	 * @return 	attendance	建立好的打卡数据结构
 	 * @throws 	IOException 

@@ -37,7 +37,12 @@ public class CheckAttendance extends HttpServlet {
     }
     
     /**
+     * Direct web service to difference page based on the record of attendance
+     * 				if attendance record exist, direct to success page to display records
+     * 				if attendance record does not exist, direct to index page and prompt to re-enter
      * 
+     * 将网络服务导向不同页面，	如有出勤记录，导入成功页面并显示出勤记录
+     * 						如无出勤记录，导入index页面并显示无出勤记录
      * @param request
      * @param response
      * @throws ServletException
