@@ -4,7 +4,7 @@ AttendanceCheck reads excel files of attendance records from certain folder, sto
 ## To use this program:
 - Change DEFAULT_DIR_PATH in AttendanceCheckListener to the folder where the attendance record is stored
 - Configure context.xml which provide Database object to customer Mysql setting
-- Build tables with default names normal_record and abnormal_record
+- Run setup.sql to build tables with default names normal_record and abnormal_record
 - The excel files should store records in following format:
 
   name:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; time:
