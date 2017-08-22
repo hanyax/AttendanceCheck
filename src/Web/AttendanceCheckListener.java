@@ -16,8 +16,8 @@ import Model.AttendanceDAOImplement;
 @WebListener
 public class AttendanceCheckListener implements ServletContextListener {
 	private final String DEFAULT_DIR_PATH = "/Users/shawn-xu/Desktop";
-    private final String DEFAULT_NORMAL_TABLE_NAME = "test";
-    private final String DEFAULT_ABNORMAL_TABLE_NAME = "abnormal";
+    private final String DEFAULT_NORMAL_TABLE_NAME = "normal_record";
+    private final String DEFAULT_ABNORMAL_TABLE_NAME = "abnormal_record";
     private final String DEFAULT_JDNI_NAME = "jdbc/attendance";
     
 	/**
