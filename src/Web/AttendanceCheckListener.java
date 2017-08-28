@@ -22,10 +22,10 @@ public class AttendanceCheckListener implements ServletContextListener {
     
 	/**
 	 * Change default settings above to reuse code
-	 * DEFAULT_DIR_PATH: the default directory where all .xlsx file will be read and used
-	 * DEFAULT_NORMAL_TABLE_NAME: the default database table name for storing normal attendance record
-	 * DEFAULT_ABNORMAL_TABLE_NAME: the default database table name for storing abnormal attendance record
-	 * DEFAULT_JDNI_NAME: the default JDNI name for datasource configuration
+	 * DEFAULT_DIR_PATH: 			the default directory where all .xlsx file will be read and used
+	 * DEFAULT_NORMAL_TABLE_NAME: 	the default database table name for storing normal attendance record
+	 * DEFAULT_ABNORMAL_TABLE_NAME: 	the default database table name for storing abnormal attendance record
+	 * DEFAULT_JDNI_NAME: 			the default JDNI name for datasource configuration
 	 * 
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
